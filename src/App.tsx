@@ -1,10 +1,9 @@
 import React from 'react';
 import './App.css';
 import {IQuestion} from './models/IQuestion';
-import Question from './components/Question';
-import StartPage from './components/StartPage';
-import SummaryPage from './components/SummaryPage';
-import Header from './components/Header';
+import StartPage from './pages/StartPage';
+import SummaryPage from './pages/SummaryPage';
+import QuizPage from './pages/QuizPage';
 
 const questions: Array<IQuestion> = [
   {
@@ -95,13 +94,10 @@ class App extends React.Component<{}, IState> {
 
       case ActiveView.quiz:
         const q = this.getActiveQuestion();
-        view =
-          <div>
-            <Header correct={this.state.correctAnswers} wrong={this.state.wrongAnswers}/>
-            <Question text={q.text}
-                              options={q.options}
-                              onNext={this.nextQuestion}/>
-          </div>;
+        view = <QuizPage correct={this.state.correctAnswers}
+                         wrong={this.state.wrongAnswers}
+                         question={q}
+                         nextQuestion={this.nextQuestion}/>;
         break;
 
       case ActiveView.summary:
