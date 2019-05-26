@@ -4,6 +4,7 @@ import {IQuestion} from './models/IQuestion';
 import Question from './components/Question';
 import StartPage from './components/StartPage';
 import SummaryPage from './components/SummaryPage';
+import Header from './components/Header';
 
 const questions: Array<IQuestion> = [
   {
@@ -72,8 +73,8 @@ class App extends React.Component<{}, IState> {
     console.log('answerIndex: ' + answerIndex, 'quizFinished: ' + quizFinished);
 
     this.setState({
-      correctAnswers:  (correctAnswer) ? s.correctAnswers + 1 : s.correctAnswers,
-      wrongAnswers:  (!correctAnswer) ? s.wrongAnswers + 1 : s.wrongAnswers,
+      correctAnswers: (correctAnswer) ? s.correctAnswers + 1 : s.correctAnswers,
+      wrongAnswers: (!correctAnswer) ? s.wrongAnswers + 1 : s.wrongAnswers,
       activeQuestion: (quizFinished) ? 0 : s.activeQuestion + 1,
       activeView: (quizFinished) ? ActiveView.summary : s.activeView
     })
@@ -94,9 +95,13 @@ class App extends React.Component<{}, IState> {
 
       case ActiveView.quiz:
         const q = this.getActiveQuestion();
-        view = <Question text={q.text}
-                         options={q.options}
-                         onNext={this.nextQuestion}/>;
+        view =
+          <div>
+            <Header correct={this.state.correctAnswers} wrong={this.state.wrongAnswers}/>
+            <Question text={q.text}
+                              options={q.options}
+                              onNext={this.nextQuestion}/>
+          </div>;
         break;
 
       case ActiveView.summary:
