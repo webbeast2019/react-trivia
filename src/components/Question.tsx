@@ -13,11 +13,7 @@ const Question: React.FC<IProps> = ({text, options, onNext}) => {
 
   const optionalAnswers = options.map((q: string, i: number) => (
     <li key={i}>
-      <label>
-        <input name="options"
-               type="radio"
-               value={i}
-               onClick={onClick.bind(null, i)}/>
+      <label onClick={onClick.bind(null, i)}>
         <span>{q}</span>
       </label>
     </li>

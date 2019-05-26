@@ -33,18 +33,24 @@ enum ActiveView {
 }
 
 interface IState {
+  correctAnswers: number,
+  wrongAnswers: number,
   activeView: ActiveView
   activeQuestion: number
 }
+
+const initState: IState = {
+  correctAnswers: 0,
+  wrongAnswers: 0,
+  activeView: ActiveView.start,
+  activeQuestion: 0,
+};
 
 class App extends React.Component<{}, IState> {
   constructor(props = {}) {
     super(props);
 
-    this.state = {
-      activeView: ActiveView.start,
-      activeQuestion: 0,
-    };
+    this.state = {...initState};
   }
 
   componentDidMount() {
@@ -53,18 +59,23 @@ class App extends React.Component<{}, IState> {
 
   startQuiz = () => {
     this.setState({
-      activeQuestion: 0,
+      ...initState,
       activeView: ActiveView.quiz
-    })
+    });
   };
 
   nextQuestion = (answerIndex: number) => {
+    const s = this.state;
+    const correctAnswer = answerIndex === questions[this.state.activeQuestion].correctIndex;
     const quizFinished = (this.state.activeQuestion + 1 === questions.length);
+
     console.log('answerIndex: ' + answerIndex, 'quizFinished: ' + quizFinished);
 
     this.setState({
-      activeQuestion: (quizFinished) ? 0 : this.state.activeQuestion + 1,
-      activeView: (quizFinished) ? ActiveView.summary : this.state.activeView
+      correctAnswers:  (correctAnswer) ? s.correctAnswers + 1 : s.correctAnswers,
+      wrongAnswers:  (!correctAnswer) ? s.wrongAnswers + 1 : s.wrongAnswers,
+      activeQuestion: (quizFinished) ? 0 : s.activeQuestion + 1,
+      activeView: (quizFinished) ? ActiveView.summary : s.activeView
     })
   };
 
@@ -89,7 +100,9 @@ class App extends React.Component<{}, IState> {
         break;
 
       case ActiveView.summary:
-        view = <SummaryPage onStartAgain={this.startQuiz}/>;
+        view = <SummaryPage correct={this.state.correctAnswers}
+                            total={questions.length}
+                            onStartAgain={this.startQuiz}/>;
 
         break;
     }
