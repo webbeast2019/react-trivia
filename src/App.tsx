@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import './App.css';
 import {IQuestion} from './models/IQuestion';
 import StartPage from './pages/StartPage';
@@ -32,95 +32,75 @@ enum ActiveView {
   summary
 }
 
-interface IState {
-  correctAnswers: number,
-  wrongAnswers: number,
-  activeView: ActiveView
-  activeQuestion: number
-}
+const App: React.FC<{}> = () => {
+  const [correctAnswers, setCorrectAnswers] = useState(0);
+  const [wrongAnswers, setWrongAnswers] = useState(0);
+  const [activeView, setActiveView] = useState(ActiveView.start);
+  const [activeQuestion, setActiveQuestion] = useState(0);
 
-const initState: IState = {
-  correctAnswers: 0,
-  wrongAnswers: 0,
-  activeView: ActiveView.start,
-  activeQuestion: 0,
-};
-
-class App extends React.Component<{}, IState> {
-  constructor(props = {}) {
-    super(props);
-
-    this.state = {...initState};
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     console.log('componentDidMount App');
-  }
+  },[]);
 
-  startQuiz = () => {
-    this.setState({
-      ...initState,
-      activeView: ActiveView.quiz
-    });
+  // on quiz start - reset state
+  const startQuiz = () => {
+    setCorrectAnswers(0);
+    setWrongAnswers(0);
+    setActiveView(ActiveView.quiz);
+    setActiveQuestion(0);
+  };
+  // on answer - update state and go to next question (or summary page)
+  const nextQuestion = (answerIndex: number) => {
+    const correct = answerIndex === questions[activeQuestion].correctIndex;
+    const quizFinished = (activeQuestion + 1 === questions.length);
+
+    if (correct) {
+      setCorrectAnswers(correctAnswers + 1);
+    } else {
+      setWrongAnswers(wrongAnswers + 1);
+    }
+
+    if (quizFinished) {
+      setActiveView(ActiveView.summary);
+    } else {
+      setActiveQuestion(activeQuestion + 1)
+    }
   };
 
-  nextQuestion = (answerIndex: number) => {
-    const s = this.state;
-    const correctAnswer = answerIndex === questions[this.state.activeQuestion].correctIndex;
-    const quizFinished = (this.state.activeQuestion + 1 === questions.length);
+  const getActiveQuestion = (): IQuestion => (questions[activeQuestion]);
 
-    console.log('answerIndex: ' + answerIndex, 'quizFinished: ' + quizFinished);
-
-    this.setState({
-      correctAnswers: (correctAnswer) ? s.correctAnswers + 1 : s.correctAnswers,
-      wrongAnswers: (!correctAnswer) ? s.wrongAnswers + 1 : s.wrongAnswers,
-      activeQuestion: (quizFinished) ? 0 : s.activeQuestion + 1,
-      activeView: (quizFinished) ? ActiveView.summary : s.activeView
-    })
-  };
-
-  getActiveQuestion(): IQuestion {
-    return questions[this.state.activeQuestion];
-  }
-
-  // get view by activeView enum
-  getActiveView(): JSX.Element | undefined {
+  // get active page: start / quiz / summary
+  const getActiveView = (): JSX.Element | undefined => {
     let view;
 
-    switch (this.state.activeView) {
+    switch (activeView) {
       case ActiveView.start:
-        view = <StartPage onStart={this.startQuiz}/>;
+        view = <StartPage onStart={startQuiz}/>;
         break;
 
       case ActiveView.quiz:
-        const q = this.getActiveQuestion();
-        view = <QuizPage correct={this.state.correctAnswers}
-                         wrong={this.state.wrongAnswers}
+        const q = getActiveQuestion();
+        view = <QuizPage correct={correctAnswers}
+                         wrong={wrongAnswers}
                          question={q}
-                         nextQuestion={this.nextQuestion}/>;
+                         nextQuestion={nextQuestion}/>;
         break;
 
       case ActiveView.summary:
-        view = <SummaryPage correct={this.state.correctAnswers}
+        view = <SummaryPage correct={correctAnswers}
                             total={questions.length}
-                            onStartAgain={this.startQuiz}/>;
+                            onStartAgain={startQuiz}/>;
 
         break;
     }
-
     return view;
-  }
+  };
 
-
-  render() {
-    const view = this.getActiveView();
-
-    return (
-      <div className="App">
-        {view}
-      </div>
-    );
-  }
-}
+  return (
+    <div className="App">
+      {getActiveView()}
+    </div>
+  );
+};
 
 export default App;
