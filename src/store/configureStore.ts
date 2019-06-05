@@ -19,13 +19,7 @@ const questions: Array<IQuestion> = [
     text: 'Aside from Denmark, Danish is the official language of WHICH other country?',
     options: ['Greenland', 'Germany', 'Iceland', 'Finland'],
     correctIndex: 0
-  },
-  {
-    id: 'q4',
-    text: 'Aside from Denmark, Danish is the official language of WHICH other country?',
-    options: ['Greenland', 'Germany', 'Iceland', 'Finland'],
-    correctIndex: 0
-  },
+  }
 ];
 
 const dataReducer = (state = questions, action: any) => {
