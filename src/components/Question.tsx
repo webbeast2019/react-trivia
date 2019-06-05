@@ -1,14 +1,15 @@
 import React from 'react';
 import {connect} from 'react-redux';
+import {IQuestion} from '../models/IQuestion';
 
 interface IProps {
-  text: string
-  options: Array<string>,
-  onNext: Function
-  numOfQuestions: number
+  text: string;
+  options: Array<string>;
+  onNext: Function;
+  allQuestions: Array<IQuestion>;
 }
 
-const Question: React.FC<IProps> = ({numOfQuestions, text, options, onNext}) => {
+const Question: React.FC<IProps> = ({allQuestions, text, options, onNext}) => {
   function onClick(answerIndex: number) {
     onNext(answerIndex);
   }
@@ -21,9 +22,10 @@ const Question: React.FC<IProps> = ({numOfQuestions, text, options, onNext}) => 
     </li>
   ));
 
+  console.log('Just checking the store: ', allQuestions);
+
   return (
     <div>
-      <h1>Data from redux store: {numOfQuestions}</h1>
       <h1>{text}</h1>
       <ul>
         {optionalAnswers}
@@ -33,22 +35,8 @@ const Question: React.FC<IProps> = ({numOfQuestions, text, options, onNext}) => 
 };
 
 
-const mapStateToProps = (state: any) => {
-  return {
-    numOfQuestions: state.length
-  }
-};
+const mapStateToProps = (state: any) => ({
+  allQuestions: state
+});
 
-const mapDispatchToProps = (dispatch: any) => {
-  return {
-    onNext: (index:number) => {
-      const action = {
-        type: 'ADVANCE_ACTIVE_QUESTION',
-        payload: index
-      };
-      dispatch(action);
-    }
-  };
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(Question);
+export default connect(mapStateToProps)(Question);

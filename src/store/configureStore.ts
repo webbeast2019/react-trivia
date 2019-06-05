@@ -32,6 +32,7 @@ const dataReducer = (state = questions, action: any) => {
   return state;
 };
 
-export default createStore(
-  dataReducer,
-);
+
+export default function configureStore() {
+  return createStore(dataReducer);
+}
