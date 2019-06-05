@@ -1,4 +1,5 @@
-import {createStore} from 'redux'
+import {combineReducers, createStore} from 'redux'
+import {ActiveViewEmum} from '../models/ActiveView';
 import {IQuestion} from '../models/IQuestion';
 
 const questions: Array<IQuestion> = [
@@ -19,20 +20,38 @@ const questions: Array<IQuestion> = [
     text: 'Aside from Denmark, Danish is the official language of WHICH other country?',
     options: ['Greenland', 'Germany', 'Iceland', 'Finland'],
     correctIndex: 0
-  },
-  {
-    id: 'q4',
-    text: 'Aside from Denmark, Danish is the official language of WHICH other country?',
-    options: ['Greenland', 'Germany', 'Iceland', 'Finland'],
-    correctIndex: 0
-  },
+  }
 ];
 
-const dataReducer = (state = questions, action: any) => {
+const questionsReducer = (state = questions, action: any) => {
   return state;
 };
 
+const scoresInitState = {
+  correctAnswers: 0,
+  wrongAnswers: 0,
+};
+
+const scoresReducer = (state = scoresInitState, action: any) => {
+  return state;
+};
+
+const pageViewState = {
+  activeView: ActiveViewEmum.start,
+  activeQuestion: 0,
+};
+
+const pageViewReducer = (state = pageViewState, action: any) => {
+  return state;
+};
 
 export default function configureStore() {
-  return createStore(dataReducer);
+  // combine all reducers to create  root reducer
+  const rootReducer = combineReducers({
+    questions: questionsReducer,
+    scores: scoresReducer,
+    pageView: pageViewReducer
+  });
+
+  return createStore(rootReducer);
 }

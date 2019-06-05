@@ -36,7 +36,7 @@ const Question: React.FC<IProps> = ({allQuestions, text, options, onNext}) => {
 
 
 const mapStateToProps = (state: any) => ({
-  allQuestions: state
+  allQuestions: state.questions
 });
 
 export default connect(mapStateToProps)(Question);

@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import './App.css';
-import {IQuestion} from './models/IQuestion';
+import {ActiveViewEmum} from './models/ActiveView';
 import StartPage from './pages/StartPage';
 import SummaryPage from './pages/SummaryPage';
 import QuizPage from './pages/QuizPage';
+import {IQuestion} from './models/IQuestion';
 
 const questions: Array<IQuestion> = [
   {
@@ -26,27 +27,22 @@ const questions: Array<IQuestion> = [
   }
 ];
 
-enum ActiveView {
-  start,
-  quiz,
-  summary
-}
 
 const App: React.FC<{}> = () => {
   const [correctAnswers, setCorrectAnswers] = useState(0);
   const [wrongAnswers, setWrongAnswers] = useState(0);
-  const [activeView, setActiveView] = useState(ActiveView.start);
+  const [activeView, setActiveView] = useState(ActiveViewEmum.start);
   const [activeQuestion, setActiveQuestion] = useState(0);
 
   useEffect(() => {
     console.log('componentDidMount App');
-  },[]);
+  }, []);
 
   // on quiz start - reset state
   const startQuiz = () => {
     setCorrectAnswers(0);
     setWrongAnswers(0);
-    setActiveView(ActiveView.quiz);
+    setActiveView(ActiveViewEmum.quiz);
     setActiveQuestion(0);
   };
   // on answer - update state and go to next question (or summary page)
@@ -61,7 +57,7 @@ const App: React.FC<{}> = () => {
     }
 
     if (quizFinished) {
-      setActiveView(ActiveView.summary);
+      setActiveView(ActiveViewEmum.summary);
     } else {
       setActiveQuestion(activeQuestion + 1)
     }
@@ -74,11 +70,11 @@ const App: React.FC<{}> = () => {
     let view;
 
     switch (activeView) {
-      case ActiveView.start:
+      case ActiveViewEmum.start:
         view = <StartPage onStart={startQuiz}/>;
         break;
 
-      case ActiveView.quiz:
+      case ActiveViewEmum.quiz:
         const q = getActiveQuestion();
         view = <QuizPage correct={correctAnswers}
                          wrong={wrongAnswers}
@@ -86,7 +82,7 @@ const App: React.FC<{}> = () => {
                          nextQuestion={nextQuestion}/>;
         break;
 
-      case ActiveView.summary:
+      case ActiveViewEmum.summary:
         view = <SummaryPage correct={correctAnswers}
                             total={questions.length}
                             onStartAgain={startQuiz}/>;
