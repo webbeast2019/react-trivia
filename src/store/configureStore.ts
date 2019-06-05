@@ -54,7 +54,7 @@ const scoresReducer = (state = scoresInitState, action: Action) => {
     case 'ADVANCE_WRONG':
       return {
         ...state,
-        correctAnswers: state.wrongAnswers + 1
+        wrongAnswers: state.wrongAnswers + 1
       };
 
     case 'RESET_VIEW':
