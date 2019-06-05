@@ -23,8 +23,19 @@ const questions: Array<IQuestion> = [
   }
 ];
 
-const questionsReducer = (state = questions, action: any) => {
-  return state;
+interface Action {
+  type: string;
+  payload: any;
+}
+
+const questionsReducer = (state = questions, action: Action) => {
+  switch (action.type) {
+    case 'SET_QUESTIONS':
+      return [...action.payload];
+
+    default:
+      return state;
+  }
 };
 
 const scoresInitState = {
@@ -32,8 +43,27 @@ const scoresInitState = {
   wrongAnswers: 0,
 };
 
-const scoresReducer = (state = scoresInitState, action: any) => {
-  return state;
+const scoresReducer = (state = scoresInitState, action: Action) => {
+  switch (action.type) {
+    case 'ADVANCE_CORRECT':
+      return {
+        ...state,
+        correctAnswers: state.correctAnswers + 1
+      };
+
+    case 'ADVANCE_WRONG':
+      return {
+        ...state,
+        correctAnswers: state.wrongAnswers + 1
+      };
+
+    case 'RESET_VIEW':
+      return {...scoresInitState};
+
+
+    default:
+      return state;
+  }
 };
 
 const pageViewState = {
@@ -41,8 +71,27 @@ const pageViewState = {
   activeQuestion: 0,
 };
 
-const pageViewReducer = (state = pageViewState, action: any) => {
-  return state;
+const pageViewReducer = (state = pageViewState, action: Action) => {
+  switch (action.type) {
+    case 'ADVANCE_QUESTION':
+      return {
+        ...state,
+        activeQuestion: pageViewState.activeQuestion + 1
+      };
+
+    case 'CHANGE_VIEW':
+      return {
+        activeView: action.payload,
+        activeQuestion: 0
+      };
+
+    case 'RESET_VIEW':
+      return {...pageViewState};
+
+
+    default:
+      return state;
+  }
 };
 
 export default function configureStore() {
