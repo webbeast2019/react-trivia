@@ -76,7 +76,7 @@ const pageViewReducer = (state = pageViewState, action: Action) => {
     case 'ADVANCE_QUESTION':
       return {
         ...state,
-        activeQuestion: pageViewState.activeQuestion + 1
+        activeQuestion: state.activeQuestion + 1
       };
 
     case 'CHANGE_VIEW':

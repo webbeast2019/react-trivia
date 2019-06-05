@@ -1,4 +1,6 @@
 import React from 'react';
+import {connect} from 'react-redux';
+import {Dispatch} from 'redux';
 
 interface IProps {
   correct: number;
@@ -26,5 +28,16 @@ const SummaryPage: React.FC<IProps> = ({correct, total, onStartAgain}) => {
   );
 };
 
+const mapStateToProps = (state: any) => ({
+  correct: state.scores.correctAnswers,
+  total: state.questions.length,
+});
 
-export default SummaryPage;
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  onStartAgain: () => {
+    dispatch({type:'RESET_VIEW'});
+    dispatch({type:'RESET_SCORE'});
+  }
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(SummaryPage);

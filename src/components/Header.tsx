@@ -1,4 +1,5 @@
 import React from 'react';
+import {connect} from 'react-redux';
 
 interface IProps {
   correct: number;
@@ -14,5 +15,9 @@ const Header: React.FC<IProps> = ({correct, wrong}) => {
   );
 };
 
+const mapStateToProps = (state: any) => ({
+  correct: state.scores.correctAnswers,
+  wrong: state.scores.wrongAnswers,
+});
 
-export default Header;
+export default connect(mapStateToProps)(Header);
