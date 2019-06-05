@@ -8,6 +8,11 @@ import configureStore from './store/configureStore';
 
 const store = configureStore();
 
+if(window.location.hostname.indexOf('localhost') > -1) {
+  // @ts-ignore
+  window['store'] = store;
+}
+
 ReactDOM.render(
   <Provider store={store}>
     <App />

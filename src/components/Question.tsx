@@ -1,15 +1,17 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {IQuestion} from '../models/IQuestion';
+import {Dispatch} from 'redux';
 
 interface IProps {
   text: string;
   options: Array<string>;
   onNext: Function;
   allQuestions: Array<IQuestion>;
+  tryDispatch: Function;
 }
 
-const Question: React.FC<IProps> = ({allQuestions, text, options, onNext}) => {
+const Question: React.FC<IProps> = ({allQuestions, text, options, onNext, tryDispatch}) => {
   function onClick(answerIndex: number) {
     onNext(answerIndex);
   }
@@ -23,6 +25,7 @@ const Question: React.FC<IProps> = ({allQuestions, text, options, onNext}) => {
   ));
 
   console.log('Just checking the store: ', allQuestions);
+  tryDispatch();
 
   return (
     <div>
@@ -39,4 +42,9 @@ const mapStateToProps = (state: any) => ({
   allQuestions: state.questions
 });
 
-export default connect(mapStateToProps)(Question);
+const mapDispatchToProps = (dispatch: Dispatch) => ({
+  tryDispatch: () => dispatch({type: 'ADVANCE_CORRECT'})
+});
+
+
+export default connect(mapStateToProps, mapDispatchToProps)(Question);
