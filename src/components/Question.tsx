@@ -6,14 +6,13 @@ import {Dispatch} from 'redux';
 interface IProps {
   text: string;
   options: Array<string>;
+  correctIndex: number;
   onNext: Function;
-  allQuestions: Array<IQuestion>;
-  tryDispatch: Function;
 }
 
-const Question: React.FC<IProps> = ({allQuestions, text, options, onNext, tryDispatch}) => {
+const Question: React.FC<IProps> = ({text, options, correctIndex, onNext}) => {
   function onClick(answerIndex: number) {
-    onNext(answerIndex);
+    onNext(answerIndex, correctIndex);
   }
 
   const optionalAnswers = options.map((q: string, i: number) => (
@@ -23,9 +22,6 @@ const Question: React.FC<IProps> = ({allQuestions, text, options, onNext, tryDis
       </label>
     </li>
   ));
-
-  console.log('Just checking the store: ', allQuestions);
-  tryDispatch();
 
   return (
     <div>
@@ -38,12 +34,23 @@ const Question: React.FC<IProps> = ({allQuestions, text, options, onNext, tryDis
 };
 
 
-const mapStateToProps = (state: any) => ({
-  allQuestions: state.questions
-});
+const mapStateToProps = (state: any) => {
+  const question: IQuestion = state.questions[state.pageView.activeQuestion];
+  return {
+    text: question.text,
+    options: question.options,
+    correctIndex: question.correctIndex
+  }
+};
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
-  tryDispatch: () => dispatch({type: 'ADVANCE_CORRECT'})
+  onNext: (answerIndex:number, correctIndex:number) => {
+    if(answerIndex === correctIndex) {
+      dispatch({type: 'ADVANCE_WRONG'});
+    } else {
+      dispatch({type: 'ADVANCE_CORRECT'});
+    }
+  }
 });
 
 

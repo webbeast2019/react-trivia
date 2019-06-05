@@ -57,7 +57,7 @@ const scoresReducer = (state = scoresInitState, action: Action) => {
         wrongAnswers: state.wrongAnswers + 1
       };
 
-    case 'RESET_VIEW':
+    case 'RESET_SCORE':
       return {...scoresInitState};
 
 
