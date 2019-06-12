@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import './App.css';
+import './App.scss';
 import {ActiveViewEmum} from './models/ActiveView';
 import StartPage from './pages/StartPage';
 import SummaryPage from './pages/SummaryPage';
