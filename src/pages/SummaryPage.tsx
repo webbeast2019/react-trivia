@@ -1,6 +1,7 @@
 import React from 'react';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
+import {Button} from '@material-ui/core';
 
 interface IProps {
   correct: number;
@@ -23,7 +24,9 @@ const SummaryPage: React.FC<IProps> = ({correct, total, onStartAgain}) => {
         (correct === total) &&
         <p>{getRandomAllCorrectMessage()}!</p>
       }
-      <button className="btn" onClick={onStartAgain}>Try again</button>
+      <Button variant="contained" color="primary" onClick={onStartAgain}>
+        Try again
+      </Button>
     </div>
   );
 };

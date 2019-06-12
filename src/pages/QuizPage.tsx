@@ -1,6 +1,6 @@
 import React from 'react';
 import Header from '../components/Header';
-import Question from '../components/Question';
+import Question from '../components/Question/Question';
 
 interface IProps {
 }

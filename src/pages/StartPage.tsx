@@ -2,6 +2,7 @@ import React from 'react';
 import {Dispatch} from 'redux';
 import {ActiveViewEmum} from '../models/ActiveView';
 import {connect} from 'react-redux';
+import {Button} from '@material-ui/core';
 
 interface IProps {
   onStart: any
@@ -12,7 +13,9 @@ const StartPage: React.FC<IProps> = ({onStart}) => {
     <div>
       <h1>Start Page</h1>
       <p>Click to start the quiz</p>
-      <button className="btn" onClick={onStart}>Start</button>
+      <Button variant="contained" color="primary" onClick={onStart}>
+        Start
+      </Button>
     </div>
   );
 };

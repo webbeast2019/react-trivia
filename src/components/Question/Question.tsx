@@ -1,8 +1,10 @@
 import React from 'react';
 import {connect} from 'react-redux';
-import {IQuestion} from '../models/IQuestion';
+import {IQuestion} from '../../models/IQuestion';
 import {Dispatch} from 'redux';
-import {ActiveViewEmum} from '../models/ActiveView';
+import {ActiveViewEmum} from '../../models/ActiveView';
+import {List, ListItem, ListItemText} from '@material-ui/core';
+import './Question.scss'
 
 interface IProps {
   text: string;
@@ -18,19 +20,17 @@ const Question: React.FC<IProps> = ({text, options, correctIndex, onNext, isLast
   }
 
   const optionalAnswers = options.map((q: string, i: number) => (
-    <li key={i} className="list-item">
-      <label onClick={onClick.bind(null, i)} className="selectable">
-        <span>{q}</span>
-      </label>
-    </li>
+    <ListItem button key={i} onClick={onClick.bind(null, i)}>
+        <ListItemText>{q}</ListItemText>
+    </ListItem>
   ));
 
   return (
-    <div>
+    <div className="Question">
       <h1>{text}</h1>
-      <ul className="list">
+      <List className="Question-options">
         {optionalAnswers}
-      </ul>
+      </List>
     </div>
   );
 };

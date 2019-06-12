@@ -5,6 +5,8 @@ import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import configureStore from './store/configureStore';
+import {createMuiTheme} from '@material-ui/core';
+import {ThemeProvider} from '@material-ui/styles';
 
 const store = configureStore();
 
@@ -13,9 +15,26 @@ if(window.location.hostname.indexOf('localhost') > -1) {
   window['store'] = store;
 }
 
+const theme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#673ab7'
+    },
+  },
+  overrides: {
+    MuiButton: {
+      root: {
+        borderRadius: '8px', // Some CSS
+      },
+    },
+  },
+});
+
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <ThemeProvider theme={theme}>
+      <App />
+    </ThemeProvider>
   </Provider>,
   document.getElementById('root'));
 
