@@ -12,7 +12,7 @@ const StartPage: React.FC<IProps> = ({onStart}) => {
     <div>
       <h1>Start Page</h1>
       <p>Click to start the quiz</p>
-      <button onClick={onStart}>Start</button>
+      <button className="btn" onClick={onStart}>Start</button>
     </div>
   );
 };

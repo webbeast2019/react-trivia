@@ -18,8 +18,8 @@ const Question: React.FC<IProps> = ({text, options, correctIndex, onNext, isLast
   }
 
   const optionalAnswers = options.map((q: string, i: number) => (
-    <li key={i}>
-      <label onClick={onClick.bind(null, i)}>
+    <li key={i} className="list-item">
+      <label onClick={onClick.bind(null, i)} className="selectable">
         <span>{q}</span>
       </label>
     </li>
@@ -28,7 +28,7 @@ const Question: React.FC<IProps> = ({text, options, correctIndex, onNext, isLast
   return (
     <div>
       <h1>{text}</h1>
-      <ul>
+      <ul className="list">
         {optionalAnswers}
       </ul>
     </div>

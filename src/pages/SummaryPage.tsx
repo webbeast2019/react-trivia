@@ -23,7 +23,7 @@ const SummaryPage: React.FC<IProps> = ({correct, total, onStartAgain}) => {
         (correct === total) &&
         <p>{getRandomAllCorrectMessage()}!</p>
       }
-      <button onClick={onStartAgain}>Try again</button>
+      <button className="btn" onClick={onStartAgain}>Try again</button>
     </div>
   );
 };
