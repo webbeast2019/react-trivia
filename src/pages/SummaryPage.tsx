@@ -2,6 +2,7 @@ import React from 'react';
 import {connect} from 'react-redux';
 import {Dispatch} from 'redux';
 import {Button} from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 interface IProps {
   correct: number;
@@ -24,9 +25,11 @@ const SummaryPage: React.FC<IProps> = ({correct, total, onStartAgain}) => {
         (correct === total) &&
         <p>{getRandomAllCorrectMessage()}!</p>
       }
-      <Button variant="contained" color="primary" onClick={onStartAgain}>
-        Try again
-      </Button>
+      <Link to="/">
+        <Button variant="contained" color="primary" onClick={onStartAgain}>
+          Try again
+        </Button>
+      </Link>
     </div>
   );
 };
@@ -38,7 +41,7 @@ const mapStateToProps = (state: any) => ({
 
 const mapDispatchToProps = (dispatch: Dispatch) => ({
   onStartAgain: () => {
-    dispatch({type:'RESET_VIEW'});
+    // dispatch({type:'RESET_VIEW'});
     dispatch({type:'RESET_SCORE'});
   }
 });
