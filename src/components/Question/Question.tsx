@@ -4,7 +4,8 @@ import {IQuestion} from '../../models/IQuestion';
 import {Dispatch} from 'redux';
 import {List, ListItem, ListItemText} from '@material-ui/core';
 import './Question.scss'
-import {Redirect} from 'react-router';
+import {Redirect, RouteComponentProps, withRouter} from 'react-router';
+import {Link} from 'react-router-dom';
 
 interface IProps {
   text: string;
@@ -14,8 +15,16 @@ interface IProps {
   isLast: boolean;
 }
 
-const Question: React.FC<IProps> = ({text, options, correctIndex, onNext, isLast}) => {
+const Question: React.FC<IProps & RouteComponentProps> = ({text, options, correctIndex, onNext, isLast, match}) => {
+  let questionIndex = 0;
+
+  if(match && match.params) {
+    // @ts-ignore
+    questionIndex = parseInt(match.params['index']);
+  }
+
   const [finished, setFinished] = useState(false);
+  console.log(match);
 
   function onClick(answerIndex: number) {
     onNext(answerIndex, correctIndex, isLast);
@@ -25,9 +34,11 @@ const Question: React.FC<IProps> = ({text, options, correctIndex, onNext, isLast
   }
 
   const optionalAnswers = options.map((q: string, i: number) => (
-    <ListItem button key={i} onClick={onClick.bind(null, i)}>
-      <ListItemText>{q}</ListItemText>
-    </ListItem>
+    <Link  key={i} to={`/question/${questionIndex + 1}`}>
+      <ListItem button onClick={onClick.bind(null, i)}>
+        <ListItemText>{q}</ListItemText>
+      </ListItem>
+    </Link>
   ));
 
 
@@ -70,4 +81,4 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Question);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(Question));
