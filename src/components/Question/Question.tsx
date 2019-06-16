@@ -5,6 +5,7 @@ import {Dispatch} from 'redux';
 import {List, ListItem, ListItemText} from '@material-ui/core';
 import './Question.scss'
 import {Redirect} from 'react-router';
+import {ActiveViewEmum} from '../../models/ActiveView';
 
 interface IProps {
   text: string;
@@ -64,7 +65,9 @@ const mapDispatchToProps = (dispatch: Dispatch) => ({
       dispatch({type: 'ADVANCE_WRONG'});
     }
 
-    if (!isLast) {
+    if (isLast) {
+      dispatch({type: 'CHANGE_VIEW', payload: ActiveViewEmum.summary})
+    } else {
       dispatch({type: 'ADVANCE_QUESTION'});
     }
   }

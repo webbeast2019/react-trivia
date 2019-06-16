@@ -8,10 +8,10 @@ import {connect} from 'react-redux';
 import {Redirect, Route, Switch} from 'react-router-dom';
 
 interface IProp {
-  // activeView: ActiveViewEmum
+  activeView: ActiveViewEmum
 }
 
-const App: React.FC<IProp> = ({/*activeView*/}) => {
+const App: React.FC<IProp> = ({activeView}) => {
 
   useEffect(() => {
     console.log('componentDidMount App');
@@ -46,13 +46,17 @@ const App: React.FC<IProp> = ({/*activeView*/}) => {
         <Route path="/summary" component={SummaryPage}/>
         <Redirect exact from="/" to="/start"/>
         <Route path="/" render={()=> <div>Page not found</div>}/>
+        {
+          activeView === ActiveViewEmum.summary &&
+          <Redirect to="/summary"/>
+        }
       </Switch>
     </div>
   );
 };
 
 const mapStateToProps = (state: any) => ({
-  // activeView: state.pageView.activeView,
+  activeView: state.pageView.activeView,
 });
 
 export default connect(mapStateToProps)(App);
