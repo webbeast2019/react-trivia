@@ -1,31 +1,31 @@
 import React from 'react';
-import {Dispatch} from 'redux';
-import {ActiveViewEmum} from '../models/ActiveView';
-import {connect} from 'react-redux';
 import {Button} from '@material-ui/core';
+import {Link} from 'react-router-dom';
 
 interface IProps {
-  onStart: any
 }
 
-const StartPage: React.FC<IProps> = ({onStart}) => {
+const StartPage: React.FC<IProps> = () => {
   return (
     <div>
       <h1>Start Page</h1>
       <p>Click to start the quiz</p>
-      <Button variant="contained" color="primary" onClick={onStart}>
-        Start
-      </Button>
+      <Link to="/question">
+        <Button variant="contained" color="primary">
+          Start
+        </Button>
+      </Link>
     </div>
   );
 };
 
 
-const mapDispatchToProps = (dispatch: Dispatch) => ({
-  onStart: () => dispatch({
-    type:'CHANGE_VIEW',
-    payload: ActiveViewEmum.quiz
-  })
-});
+// const mapDispatchToProps = (dispatch: Dispatch) => ({
+  // onStart: () => dispatch({
+  //   type: 'CHANGE_VIEW',
+  //   payload: ActiveViewEmum.quiz
+  // })
+// });
 
-export default connect(null, mapDispatchToProps)(StartPage);
+// export default connect(null, mapDispatchToProps)(StartPage);
+export default StartPage;
